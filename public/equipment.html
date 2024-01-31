@@ -2,10 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Нормативные характеристики: Оборудование</title>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
-    <p>EQUIPMENT</p>
+    <div class="nav">
+        <h1> Меню </h1>
+        <ul>
+            <li><a href="projects" class="menu"> Проекты </a></li>
+            <li><a href="ship" class="menu"> Суда </a></li>
+            <li><a href="equipment" class="menu"> Оборудование </a></li>
+            <li><a href="equipment/add" class="menu"> Добавить оборудование</a></li>
+            <li><a href="equipment/add_type" class="menu"> Добавить новый тип оборудования</a></li>
+        </ul>
+    </div>
+    <main>
+        <h3> Оборудование </h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Идентификатор</th>
+                <th>Название</th>
+                <th>Тип оборудования</th>
+                <th>Марка</th>
+                <th>Модель</th>
+                <th>Примечание</th>
+                <th class="edit_">Редактировать</th>
+                <th class="del_">Удалить</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </main>
 </body>
 </html>

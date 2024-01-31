@@ -1,14 +1,23 @@
 body {
     display: flex;
     flex-direction: row;
-    background-color: darkcyan;
 }
 
 .nav {
     display: flex;
     flex-direction: column;
 }
-
+.del_ {
+    background-color: red;
+}
+.edit_ {
+    background-color: green;
+}
 .menu {
     margin-bottom: 10px;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
