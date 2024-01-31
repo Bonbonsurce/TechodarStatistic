@@ -8,7 +8,7 @@ const server = http.createServer((req, res) => {
     console.log(req.url);
 
     switch(req.url) {
-        case '/ships':
+        case '/ship':
             filePath = __dirname + '/public/ship.html';
             break;
         case '/equipment':
