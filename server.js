@@ -11,6 +11,12 @@ const server = http.createServer((req, res) => {
         case '/ships':
             filePath = __dirname + '/public/ship.html';
             break;
+        case '/equipment':
+            filePath = __dirname + '/public/equipment.html';
+            break;
+        case '/projects':
+            filePath = __dirname + '/public/projects.html';
+            break;
         default:
             filePath = __dirname + '/public/index.html';
             break;
