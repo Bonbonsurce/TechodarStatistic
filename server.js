@@ -25,7 +25,9 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (err, data) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
-        res.end(data, 'utf8');
+        res.write(data);
+        res.end('<link rel="stylesheet" type="text/css" href="/css/main.css">', 'utf8');
+        //res.end(data, 'utf8');
     })
 });
 server.listen(port, hostname, () => {
