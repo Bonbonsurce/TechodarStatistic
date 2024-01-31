@@ -16,6 +16,8 @@
             <li><a href="equipment/add_type" class="menu"> Добавить новый тип оборудования</a></li>
         </ul>
     </div>
+    <button id="me" onclick="check()">TEST BUTTON</button>
+    <ul id="equipmentList"></ul>
     <main>
         <h3> Оборудование </h3>
         <table>
@@ -35,5 +37,25 @@
             </tbody>
         </table>
     </main>
+
+    <script defer>
+        function check() {
+            console.log('4');
+            fetch('/equipment_show')
+                .then(response => response.json())
+                .then(data => {
+                    const equipmentList = document.getElementById('equipmentList');
+                    equipmentList.innerHTML = ''; // Очищаем содержимое
+                    data.forEach(item => {
+                        const listItem = document.createElement('div');
+                        listItem.textContent = item.name + ' - ' + item.model; // Пример вывода данных, замените на необходимый формат
+                        equipmentList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка получения данных:', error);
+                });
+        }
+    </script>
 </body>
 </html>

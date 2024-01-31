@@ -3,6 +3,9 @@ const fs = require("fs");
 const hostname = '127.0.0.1';
 const port = 3000;
 const { Pool } = require('pg');
+const express = require('express');
+const router = express.Router();
+
 
 const pool = new Pool({
     user: 'postgres',
@@ -36,12 +39,23 @@ pool.connect((err, client, release) => {
     release();
 });
 
+router.get('/equipment', (req, res) => {
+    pool.query('SELECT * FROM equipment', (err, result) => {
+        if (err) {
+            console.error('Ошибка выполнения запроса:', err);
+            res.status(500).send('Ошибка выполнения запроса');
+        } else {
+            res.json(result.rows);
+        }
+    });
+});
+
+module.exports = router;
 
 const server = http.createServer((req, res) => {
     let filePath = __dirname + '/public/index.html';
 
     console.log(req.url);
-
     switch(req.url) {
         case '/ship':
             filePath = __dirname + '/public/ship.html';
@@ -52,6 +66,21 @@ const server = http.createServer((req, res) => {
         case '/equipment':
             filePath = __dirname + '/public/equipment.html';
             break;
+        case '/equipment_show': // Изменяем путь для получения данных об оборудовании
+            // Обработка запроса на получение данных об оборудовании
+            pool.query('SELECT * FROM equipment', (err, result) => {
+                if (err) {
+                    console.error('Ошибка выполнения запроса:', err);
+                    res.statusCode = 500;
+                    res.end('Ошибка выполнения запроса');
+                } else {
+                    // Отправляем данные в формате JSON
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(result.rows));
+                }
+            });
+            return; // Завершаем выполнение, чтобы не отправить HTML ниже
         case '/equipment/add':
             filePath = __dirname + '/public/equipment_add.html';
             break;
