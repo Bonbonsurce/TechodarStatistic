@@ -88,6 +88,12 @@ const server = http.createServer((req, res) => {
         case '/equipment':
             filePath = __dirname + '/public/equipment.html';
             break;
+        case '/equipment/:id_equipment':
+            // Обработка запроса для отображения информации о конкретном оборудовании
+            const equipmentId = req.params.id_equipment;
+            // Здесь можно выполнить запрос к базе данных для получения информации о конкретном оборудовании по его ID
+            // Затем отобразить соответствующую страницу с информацией о конкретном оборудовании
+            break;
         case '/equipment/edit':
             filePath = __dirname + '/public/equip_edit.html';
             break;

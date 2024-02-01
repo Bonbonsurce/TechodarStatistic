@@ -150,6 +150,10 @@
                             hidePopup();
                         });
 
+                        row.addEventListener('click', () => {
+                            window.location.href = `/equipment/${item.id_equipment}`; // Перенаправление на другую страницу с передачей идентификатора
+                        });
+
                         tableBody.appendChild(row);
                     });
                 })
