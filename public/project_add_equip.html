@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Добавление проекта</title>
+    <title>Добавить оборудование</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <style>
         table {
             border-collapse: collapse; /* Объединение границ */
@@ -14,22 +15,13 @@
             padding: 8px; /* Внутренний отступ ячеек */
             text-align: left; /* Выравнивание текста в ячейках */
         }
-        body {
-            display: flex;
-            flex-direction: row;
-        }
-
-        .nav {
-            display: flex;
-            flex-direction: column;
-        }
-
-        main{
-            flex: 1;
-        }
-        .entry_block{
+        body{
             display:flex;
-            flex-direction: row;
+            flex-direction:row;
+        }
+        .add_eq{
+            display:flex;
+            flex-direction: column;
         }
     </style>
 </head>
@@ -45,43 +37,24 @@
         <li><a href="projects/add" class="menu"> Добавить новый проект</a></li>
     </ul>
 </div>
-<main>
-    <h2>Добавить проект</h2>
-    <div class=entry_block>
-        <h4>Название</h4>
-        <input type="text">
-        <h4>Номер</h4>
-        <input type="text">
-        <h4>Назначение</h4>
-        <input type="text">
-    </div>
-    <h3>Характеристики</h3>
+<div class="add_eq">
+    <h3>Добавить оборудование в проект</h3>
     <table>
         <thead>
         <tr>
+            <th>Идентификатор</th>
             <th>Название</th>
-            <th>Значение</th>
+            <th>Тип оборудования</th>
+            <th>Марка</th>
+            <th>Модель</th>
+            <th>Примечание</th>
+            <th class="add_">Добавить в проект</th>
         </tr>
         </thead>
         <tbody id="table-body">
         </tbody>
     </table>
-    <h3>Добавить оборудование в проект</h3>
-    <table>
-        <thead>
-        <tr>
-            <th>Тип</th>
-            <th>Марка</th>
-            <th>Модель</th>
-            <th class="del_">Удалить</th>
-        </tr>
-        </thead>
-        <tbody id="table-body1">
-        </tbody>
-    </table>
-    <button>Добавить Оборудование в проект</button>
-
-    <button>Добавить проект</button>
-</main>
+    <button>Подтвердить выбор</button>
+</div>
 </body>
 </html>

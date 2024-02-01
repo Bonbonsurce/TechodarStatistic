@@ -85,6 +85,12 @@ const server = http.createServer((req, res) => {
         case '/ship/delete':
             filePath = __dirname + '/public/ship_del.html';
             break;
+        case '/ship/:id_ship':
+            // Обработка запроса для отображения информации о конкретном оборудовании
+            const shipId = req.params.id_ship;
+            // Здесь можно выполнить запрос к базе данных для получения информации о конкретном оборудовании по его ID
+            // Затем отобразить соответствующую страницу с информацией о конкретном оборудовании
+            break;
         case '/equipment':
             filePath = __dirname + '/public/equipment.html';
             break;
@@ -124,6 +130,34 @@ const server = http.createServer((req, res) => {
             break;
         case '/projects':
             filePath = __dirname + '/public/projects.html';
+            break;
+        case '/projects/add_equipment':
+            filePath = __dirname + '/public/project_add_equip.html';
+            break;
+        case '/project_show': // Изменяем путь для получения данных об оборудовании
+            // Обработка запроса на получение данных об оборудовании
+            pool.query('SELECT * FROM project', (err, result) => {
+                if (err) {
+                    console.error('Ошибка выполнения запроса:', err);
+                    res.statusCode = 500;
+                    res.end('Ошибка выполнения запроса');
+                } else {
+                    // Отправляем данные в формате JSON
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(result.rows));
+                    console.log(result);
+                }
+            });
+            return;
+        case '/projects/:id_project':
+            // Обработка запроса для отображения информации о конкретном оборудовании
+            const projectId = req.params.id_project;
+            // Здесь можно выполнить запрос к базе данных для получения информации о конкретном оборудовании по его ID
+            // Затем отобразить соответствующую страницу с информацией о конкретном оборудовании
+            break;
+        case '/projects/delete':
+            filePath = __dirname + '/public/project_del.html';
             break;
         case '/projects/add':
             filePath = __dirname + '/public/projects_add.html';

@@ -148,6 +148,10 @@
                             hidePopup();
                         });
 
+                        row.addEventListener('click', () => {
+                            window.location.href = `/ship/${item.id_ship}`; // Перенаправление на другую страницу с передачей идентификатора
+                        });
+
                         tableBody.appendChild(row);
                     });
                 })
