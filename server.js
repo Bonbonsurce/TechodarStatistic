@@ -60,8 +60,30 @@ const server = http.createServer((req, res) => {
         case '/ship':
             filePath = __dirname + '/public/ship.html';
             break;
+        case '/ship_show': // Изменяем путь для получения данных об оборудовании
+            // Обработка запроса на получение данных об оборудовании
+            pool.query('SELECT * FROM ship', (err, result) => {
+                if (err) {
+                    console.error('Ошибка выполнения запроса:', err);
+                    res.statusCode = 500;
+                    res.end('Ошибка выполнения запроса');
+                } else {
+                    // Отправляем данные в формате JSON
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(result.rows));
+                    console.log(result);
+                }
+            });
+            return;
         case '/ship/add':
             filePath = __dirname + '/public/ship_add.html';
+            break;
+        case '/ship/edit':
+            filePath = __dirname + '/public/ship_edit.html';
+            break;
+        case '/ship/delete':
+            filePath = __dirname + '/public/ship_del.html';
             break;
         case '/equipment':
             filePath = __dirname + '/public/equipment.html';
