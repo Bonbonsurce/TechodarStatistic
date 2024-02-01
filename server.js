@@ -66,6 +66,12 @@ const server = http.createServer((req, res) => {
         case '/equipment':
             filePath = __dirname + '/public/equipment.html';
             break;
+        case '/equipment/edit':
+            filePath = __dirname + '/public/equip_edit.html';
+            break;
+        case '/equipment/delete':
+            filePath = __dirname + '/public/equip_del.html';
+            break;
         case '/equipment_show': // Изменяем путь для получения данных об оборудовании
             // Обработка запроса на получение данных об оборудовании
             pool.query('SELECT * FROM equipment', (err, result) => {
@@ -78,6 +84,7 @@ const server = http.createServer((req, res) => {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
                     res.end(JSON.stringify(result.rows));
+                    console.log(result);
                 }
             });
             return; // Завершаем выполнение, чтобы не отправить HTML ниже
@@ -101,8 +108,12 @@ const server = http.createServer((req, res) => {
     fs.readFile(filePath, (err, data) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'text/html');
+        // Отправка HTML-страницы клиенту
         res.write(data);
-        res.end('<link rel="stylesheet" type="text/css" href="/css/main.css">', 'utf8');
+
+        // Отправка тега для подключения CSS файла
+        res.write('<link rel="stylesheet" type="text/css" href="/public/css/main.css">');
+        res.end();
         //res.end(data, 'utf8');
     })
 });

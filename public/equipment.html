@@ -3,7 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Нормативные характеристики: Оборудование</title>
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="/public/css/main.css">
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: green;
+            padding: 20px;
+            border: 1px solid black;
+        }
+
+        table {
+            border-collapse: collapse; /* Объединение границ */
+            width: 100%; /* Ширина таблицы */
+        }
+
+        th, td {
+            border: 1px solid black; /* Границы для всех ячеек */
+            padding: 8px; /* Внутренний отступ ячеек */
+            text-align: left; /* Выравнивание текста в ячейках */
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
     <div class="nav">
@@ -16,8 +48,8 @@
             <li><a href="equipment/add_type" class="menu"> Добавить новый тип оборудования</a></li>
         </ul>
     </div>
-    <button id="me" onclick="check()">TEST BUTTON</button>
-    <ul id="equipmentList"></ul>
+    <button id="me" onclick="check()" hidden="false">test</button>
+
     <main>
         <h3> Оборудование </h3>
         <table>
@@ -36,20 +68,89 @@
             <tbody id="table-body">
             </tbody>
         </table>
+
+        <div id="popup" class="popup" style="display: none;">
+        </div>
+
     </main>
 
     <script defer>
+        window.onload = function() {
+            check();
+        };
+        // Функция для отображения окна с информацией
+        function showPopup(item) {
+            const popup = document.getElementById('popup');
+            popup.textContent = `ID: ${item.id_equipment}, Name: ${item.name}, Type: ${item.id_type_equipment},
+            Mark: ${item.mark}, Model: ${item.model}, Description: ${item.description}`;
+            popup.style.display = 'block';
+        }
+
+        // Функция для скрытия окна с информацией
+        function hidePopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
         function check() {
-            console.log('4');
+            //Запрос на
             fetch('/equipment_show')
                 .then(response => response.json())
                 .then(data => {
-                    const equipmentList = document.getElementById('equipmentList');
-                    equipmentList.innerHTML = ''; // Очищаем содержимое
+                    const tableBody = document.getElementById('table-body');
                     data.forEach(item => {
-                        const listItem = document.createElement('div');
-                        listItem.textContent = item.name + ' - ' + item.model; // Пример вывода данных, замените на необходимый формат
-                        equipmentList.appendChild(listItem);
+                        const row = document.createElement('tr');
+
+                        const idEquipment = document.createElement('td');
+                        idEquipment.textContent = item.id_equipment;
+                        row.appendChild(idEquipment);
+
+                        const nameCell = document.createElement('td');
+                        nameCell.textContent = item.name;
+                        row.appendChild(nameCell);
+
+                        const typeEquipment = document.createElement('td');
+                        typeEquipment.textContent = item.id_type_equipment;
+                        row.appendChild(typeEquipment);
+
+                        const markEquipment = document.createElement('td');
+                        markEquipment.textContent = item.mark;
+                        row.appendChild(markEquipment);
+
+                        const modelEquipment = document.createElement('td');
+                        modelEquipment.textContent = item.model;
+                        row.appendChild(modelEquipment);
+
+                        const descriptionEquipment = document.createElement('td');
+                        descriptionEquipment.textContent = item.description;
+                        row.appendChild(descriptionEquipment);
+
+                        const editCell = document.createElement('td');
+                        editCell.innerHTML = '<a class="editButton" href="equipment/edit">Редактировать</a>';
+                        row.appendChild(editCell);
+
+                        const deleteCell = document.createElement('td');
+                        deleteCell.innerHTML = '<a class="deleteButton" href="equipment/delete">Удалить</a>';
+                        row.appendChild(deleteCell);
+
+                        // Добавление обработчика событий для каждой строки
+                        row.addEventListener('mouseover', () => {
+                            // Добавление стиля при наведении
+                            row.style.cursor = 'pointer';
+                            row.style.backgroundColor = 'lightgray';
+
+                            // Отображение окна с информацией
+                            showPopup(item);
+                        });
+
+                        row.addEventListener('mouseleave', () => {
+                            // Удаление стиля при уходе курсора
+                            row.style.backgroundColor = ''; // Возврат к стандартному фону
+
+                            // Скрытие окна с информацией
+                            hidePopup();
+                        });
+
+                        tableBody.appendChild(row);
                     });
                 })
                 .catch(error => {
