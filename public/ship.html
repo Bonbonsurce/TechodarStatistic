@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title> Суда </title>
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <style>
         .popup {
@@ -14,6 +14,7 @@
             background-color: green;
             padding: 20px;
             border: 1px solid black;
+            height: 40%;
         }
 
         table {
@@ -55,8 +56,8 @@
             <tr>
                 <th>Идентификатор</th>
                 <th>Название</th>
-                <th>Назначение</th>
                 <th>Регистрационный номер</th>
+                <th>Назначение</th>
                 <th>Номер проекта</th>
                 <th>Тип судна</th>
                 <th class="edit_">Редактировать</th>
@@ -78,8 +79,8 @@
         // Функция для отображения окна с информацией
         function showPopup(item) {
             const popup = document.getElementById('popup');
-            popup.textContent = `ID: ${item.id_ship}, Name: ${item.name_ship}, Registration Number: ${item.reg_num},
-            Purpose: ${item.purpose}, Project ID: ${item.id_project}, Type ID: ${item.id_type_ship}`;
+            popup.innerHTML  = `ID: ${item.id_ship}<br>Name: ${item.name_ship}<br>Registration Number: ${item.reg_num}<br>
+            Purpose: ${item.purpose}<br>Project ID: ${item.id_project}<br>Type ID: ${item.id_type_ship}`;
             popup.style.display = 'block';
         }
 

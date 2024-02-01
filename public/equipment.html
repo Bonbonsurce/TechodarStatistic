@@ -81,8 +81,8 @@
         // Функция для отображения окна с информацией
         function showPopup(item) {
             const popup = document.getElementById('popup');
-            popup.textContent = `ID: ${item.id_equipment}, Name: ${item.name}, Type: ${item.id_type_equipment},
-            Mark: ${item.mark}, Model: ${item.model}, Description: ${item.description}`;
+            popup.innerHTML  = `ID: ${item.id_equipment}<br> Name: ${item.name}<br> Type: ${item.id_type_equipment}<br>
+            Mark: ${item.mark}<br> Model: ${item.model}<br> Description: ${item.description}`;
             popup.style.display = 'block';
         }
 
