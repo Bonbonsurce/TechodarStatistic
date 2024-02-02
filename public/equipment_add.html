@@ -5,13 +5,83 @@
     <title>Добавление оборудования</title>
 </head>
 <body>
-<div class="nav">
-    <h1> Меню </h1>
-    <ul>
-        <li><a href="projects" class="menu"> Проекты </a></li>
-        <li><a href="ship" class="menu"> Суда </a></li>
-        <li><a href="equipment" class="menu"> Оборудование </a></li>
-    </ul>
-</div>
+    <div class="nav">
+        <h1> Меню </h1>
+        <ul>
+            <li><a href="http://127.0.0.1:3000/projects" class="menu"> Проекты </a></li>
+            <li><a href="http://127.0.0.1:3000/ship" class="menu"> Суда </a></li>
+            <li><a href="http://127.0.0.1:3000/equipment" class="menu"> Оборудование </a></li>
+        </ul>
+    </div>
+    <main>
+        <div class="enter_text">
+            <h4>Название оборудования</h4>
+            <input type="text" id="name_eq">
+        </div>
+        <div class="enter_text">
+            <h4>Модель оборудования</h4>
+            <input type="text" id="model_eq">
+        </div>
+        <div class="enter_text">
+            <h4>Марка оборудования</h4>
+            <input type="text" id="mark_eq">
+        </div>
+        <div class="choose_checkbox">
+            <h4>Тип оборудования</h4>
+            <select id="select_type" name="type_equip">
+            </select>
+        </div>
+    </main>
+    <div class="table_featrue">
+        <h3> Характеристики оборудования </h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Значение</th>
+                <th>Допустимое отклонение</th>
+                <th>Нормальное значение</th>
+                <th>Критическое значение</th>
+                <th>Единица измерения</th>
+            </tr>
+            </thead>
+            <tbody id="table-body_feature">
+            </tbody>
+        </table>
+    </div>
+    <script defer>
+        const selectElement = document.getElementById('select_type');
+
+        // Добавляем обработчик события клика
+        selectElement.addEventListener('click', function handler() {
+            // Вызываем функцию create_options()
+            create_options();
+
+            // Удаляем обработчик события, чтобы избежать повторных вызовов
+            selectElement.removeEventListener('click', handler);
+        });
+        function create_options() {
+            // Запрос на получение данных о типах оборудования
+            fetch('/type_equipment')
+                .then(response => response.json())
+                .then(data => {
+                    const selectElement = document.getElementById('select_type');
+
+                    // Очищаем список перед добавлением новых элементов
+                    selectElement.innerHTML = '';
+
+                    // Создаем и добавляем варианты в список
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id_type; // Устанавливаем значение опции
+                        option.textContent = item.name; // Устанавливаем текст опции
+                        selectElement.appendChild(option); // Добавляем опцию в список
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка получения данных:', error);
+                });
+        }
+    </script>
 </body>
 </html>

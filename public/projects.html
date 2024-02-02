@@ -63,7 +63,7 @@
             <th class="del_">Удалить</th>
         </tr>
         </thead>
-        <tbody id="table-body">
+        <tbody id="table-body-projects">
         </tbody>
     </table>
 
@@ -92,7 +92,7 @@
         fetch('/project_show')
             .then(response => response.json())
             .then(data => {
-                const tableBody = document.getElementById('table-body');
+                const tableBody = document.getElementById('table-body-projects');
                 data.forEach(item => {
                     const row = document.createElement('tr');
 
