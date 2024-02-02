@@ -11,5 +11,86 @@
         <li><a href="http://127.0.0.1:3000/ship" class="menu"> Суда </a></li>
         <li><a href="http://127.0.0.1:3000/equipment" class="menu"> Оборудование </a></li>
     </div>
+    <main>
+        <h4> Название типа оборудования </h4>
+        <input class="name_type" type="text">
+    </main>
+    <table>
+        <thead>
+        <tr>
+            <th>Характеристики</th>
+        </tr>
+        </thead>
+    </table>
+
+    <table class="feature_var">
+        <thead>
+            <tr>
+                <th>Название характеристики</th>
+                <th>Выбор(Да/нет)</th>
+            </tr>
+        </thead>
+        <tbody id="table-body-type-eq">
+        </tbody>
+    </table>
+
+    <button onclick="add_new_type_eq()">Добавить Новый тип оборудования</button>
+
+    <script>
+        window.onload = function() {
+            view_feature_var();
+        };
+        let featureTableVisible = false;
+        function view_feature_var(){
+            if(featureTableVisible == false) {
+                featureTableVisible = true;
+                fetch('/feature_vars')
+                    .then(response => response.json())
+                    .then(data => {
+                        const tableBody = document.getElementById('table-body-type-eq');
+                        data.forEach(item => {
+                            const row = document.createElement('tr');
+
+                            const nameFeatureVar = document.createElement('td');
+                            nameFeatureVar.textContent = item.variable;
+                            row.appendChild(nameFeatureVar);
+
+                            const editCell = document.createElement('td');
+                            editCell.innerHTML = '<input type="checkbox" class="choose_feature_var">';
+                            row.appendChild(editCell);
+
+                            tableBody.appendChild(row);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Ошибка получения данных:', error);
+                    });
+            }
+        }
+
+        function add_new_type_eq(){
+            // Получаем значение из поля ввода
+            const typeNameInput = document.querySelector('.name_type');
+            const typeName = typeNameInput.value.trim(); // Обрезаем лишние пробелы
+
+            // Проверяем, заполнено ли поле
+            if (!typeName) {
+                alert('Введите название типа оборудования');
+                return; // Прерываем выполнение функции, если поле не заполнено
+            }
+
+            // Получаем все выбранные характеристики
+            const chosenFeatures = document.querySelectorAll('.choose_feature_var:checked');
+
+            // Проверяем, выбран ли хотя бы один чекбокс
+            if (chosenFeatures.length === 0) {
+                alert('Выберите хотя бы одну характеристику');
+                return; // Прерываем выполнение функции, если не выбран ни один чекбокс
+            }
+            
+            const chosenFeatureVars = Array.from(chosenFeatures).map(feature => feature.parentElement.previousElementSibling.textContent);
+
+        }
+    </script>
 </body>
 </html>

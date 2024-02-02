@@ -109,6 +109,21 @@ const server = http.createServer((req, res) => {
                 }
             });
             return;
+        case '/feature_vars':
+            pool.query('SELECT * FROM feature_var', (err, result) => {
+                if (err) {
+                    console.error('Ошибка выполнения запроса:', err);
+                    res.statusCode = 500;
+                    res.end('Ошибка выполнения запроса');
+                } else {
+                    // Отправляем данные в формате JSON
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify(result.rows));
+                    console.log(result);
+                }
+            });
+            return;
         case '/equipment/:id_equipment':
             // Обработка запроса для отображения информации о конкретном оборудовании
             const equipmentId = req.params.id_equipment;
