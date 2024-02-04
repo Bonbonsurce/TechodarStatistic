@@ -333,6 +333,12 @@ app.get('/feature_vars', (req, res) => {
         }
     });
 });
+app.get('/equipment/test', (req, res) => {
+    const filePath = __dirname + '/public/equip_this.html';
+
+    res.sendFile(filePath);
+});
+
 app.get('/equipment/this/:id_equipment', (req, res) => {
     const equipmentID = req.params.id_equipment;
     // Здесь можно выполнить запрос к базе данных для получения информации о конкретном оборудовании по его ID
