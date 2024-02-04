@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Просмотр выбранного оборудования ...</title>
+    <style>
+        table {
+            border-collapse: collapse; /* Объединение границ */
+            width: 100%; /* Ширина таблицы */
+        }
+
+        th, td {
+            border: 1px solid black; /* Границы для всех ячеек */
+            padding: 8px; /* Внутренний отступ ячеек */
+            text-align: left; /* Выравнивание текста в ячейках */
+        }
+        body {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
 </head>
 <body>
     <div class="nav">
@@ -15,5 +36,106 @@
             <li><a href="equipment/add_type" class="menu"> Добавить новый тип оборудования</a></li>
         </ul>
     </div>
+    <main>
+        <h3> Характеристики оборудования</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Название характеристики</th>
+                <th>Значение</th>
+                <th>Нормальное значение</th>
+                <th>Допустимое отклонение</th>
+                <th>Критическое отклонение</th>
+                <th>Единица измерения</th>
+                <th class="edit_">Редактировать</th>
+                <th class="del_">Удалить</th>
+            </tr>
+            </thead>
+            <tbody id="show-feature">
+            </tbody>
+        </table>
+
+        <!--<h3> Суда с этим оборудованием </h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Тип судна</th>
+                <th>Назначение</th>
+            </tr>
+            </thead>
+            <tbody id="show-ship">
+
+            </tbody>-->
+        </table>
+        <div id="equipment-info" data-id="<%= id_equipment %>">
+            <!-- Здесь ваш контент -->
+        </div>
+    </main>
+
+    <script defer>
+        const lastSegment = window.location.pathname.split('/').pop();
+        console.log(lastSegment);
+        feature_show(lastSegment);
+        /*document.addEventListener('DOMContentLoaded', function() {
+            const equipmentDiv = document.getElementById('equipment-info');
+            const id_equipment = equipmentDiv.dataset.id;
+            console.log(id_equipment);
+            feature_show(id_equipment);
+            //ship_show(id_equipment);
+        });*/
+        function feature_show(id_equipment) {
+            console.log(id_equipment);
+            fetch(`/equipment/feature_show/${id_equipment}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('show-feature');
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+
+                        const nameFeature = document.createElement('td');
+                        nameFeature.textContent = item.feature_name;
+                        row.appendChild(nameFeature);
+
+                        const valFeature = document.createElement('td');
+                        valFeature.textContent = item.value;
+                        row.appendChild(valFeature);
+
+                        const normVal = document.createElement('td');
+                        normVal.textContent = item.norm_value;
+                        row.appendChild(normVal);
+
+                        const normDev = document.createElement('td');
+                        normDev.textContent = item.norm_deviation;
+                        row.appendChild(normDev);
+
+                        const CritDev = document.createElement('td');
+                        CritDev.textContent = item.critical_deviation;
+                        row.appendChild(CritDev);
+
+                        const VarName = document.createElement('td');
+                        VarName.textContent = item.variable;
+                        row.appendChild(VarName);
+
+                        const editCell = document.createElement('td');
+                        editCell.innerHTML = '<a>Редактировать</a>';
+                        row.appendChild(editCell);
+
+                        const deleteCell = document.createElement('td');
+                        deleteCell.innerHTML = '<a>Удалить</a>';
+                        row.appendChild(deleteCell);
+
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка получения данных:', error);
+                });
+        }
+
+        /*function ship_show(id_equip) {
+            console.log(id_equip);
+        }*/
+    </script>
 </body>
 </html>

@@ -151,7 +151,8 @@
                         });
 
                         row.addEventListener('click', () => {
-                            window.location.href = `/equipment/${item.id_equipment}`; // Перенаправление на другую страницу с передачей идентификатора
+                            window.location.href = `/equipment/this/${item.id_equipment}`; // Перенаправление на другую страницу с передачей идентификатора
+                            //window.location.href = `/equipment/this?id_equipment=${item.id_equipment}`;
                         });
 
                         tableBody.appendChild(row);

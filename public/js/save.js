@@ -41,14 +41,14 @@ pool.connect((err, client, release) => {
 });
 
 /!*router.get('/equipment', (req, res) => {
-    pool.query('SELECT * FROM equipment', (err, result) => {
-        if (err) {
-            console.error('Ошибка выполнения запроса:', err);
-            res.status(500).send('Ошибка выполнения запроса');
-        } else {
-            res.json(result.rows);
-        }
-    });
+pool.query('SELECT * FROM equipment', (err, result) => {
+    if (err) {
+        console.error('Ошибка выполнения запроса:', err);
+        res.status(500).send('Ошибка выполнения запроса');
+    } else {
+        res.json(result.rows);
+    }
+});
 });
 
 module.exports = router;*!/
@@ -165,7 +165,7 @@ const server = http.createServer((req, res) => {
             }
             break;
 
-        /!*case '/equipment/:id_equipment':
+            /!*case '/equipment/:id_equipment':
             // Обработка запроса для отображения информации о конкретном оборудовании
             const equipmentId = req.params.id_equipment;
             filePath = __dirname + `/public/equip_this.html?id_equipment=${equipmentId}`;
@@ -249,193 +249,4 @@ const server = http.createServer((req, res) => {
 });
 server.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);
-});
-*/
-
-
-const express = require('express');
-const app = express();
-const { Pool } = require('pg');
-const fs = require('fs');
-const hostname = '127.0.0.1';
-const port = 3000;
-
-const pool = new Pool({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'technodarstatistic',
-    password: 'com4ohCe',
-    port: 5432
-});
-
-pool.on('error', (err) => {
-    console.error('Ошибка подключения к базе данных:', err);
-});
-
-pool.on('connect', () => {
-    console.log('Подключение к базе данных успешно!');
-});
-
-app.get('/ship', (req, res) => {
-    const filePath = __dirname + '/public/ship.html';
-    res.sendFile(filePath);
-});
-
-app.get('/ship_show', (req, res) => {
-    pool.query('SELECT * FROM ship', (err, result) => {
-        if (err) {
-            console.error('Ошибка выполнения запроса:', err);
-            res.status(500).send('Ошибка выполнения запроса');
-        } else {
-            res.status(200).json(result.rows);
-        }
-    });
-});
-
-app.get('/ship/add', (req, res) => {
-    const filePath = __dirname + '/public/ship_add.html';
-    res.sendFile(filePath);
-});
-
-app.get('/ship/edit', (req, res) => {
-    const filePath = __dirname + '/public/ship_edit.html';
-    res.sendFile(filePath);
-});
-
-app.get('/ship/delete', (req, res) => {
-    const filePath = __dirname + '/public/ship_del.html';
-    res.sendFile(filePath);
-});
-
-app.get('/equipment', (req, res) => {
-    const filePath = __dirname + '/public/equipment.html';
-    res.sendFile(filePath);
-});
-
-app.get('/type_equipment', (req, res) => {
-    pool.query('SELECT * FROM typeequipment', (err, result) => {
-        if (err) {
-            console.error('Ошибка выполнения запроса:', err);
-            res.status(500).send('Ошибка выполнения запроса');
-        } else {
-            res.status(200).json(result.rows);
-        }
-    });
-});
-
-app.get('/feature_vars', (req, res) => {
-    pool.query('SELECT * FROM feature_var', (err, result) => {
-        if (err) {
-            console.error('Ошибка выполнения запроса:', err);
-            res.status(500).send('Ошибка выполнения запроса');
-        } else {
-            res.status(200).json(result.rows);
-        }
-    });
-});
-app.get('/equipment/this/:id_equipment', (req, res) => {
-    const equipmentID = req.params.id_equipment;
-    // Здесь можно выполнить запрос к базе данных для получения информации о конкретном оборудовании по его ID
-    // Затем отобразить соответствующую страницу с информацией о конкретном оборудовании
-    const filePath = __dirname + '/public/equip_this.html';
-
-    res.sendFile(filePath);
-});
-app.get('/equipment/feature_show/:id_equipment', (req, res) => {
-    const equipmentId = req.params.id_equipment; // Получаем id оборудования из параметра запроса
-
-    // Выполняем SQL запрос с использованием параметризации
-    pool.query(
-        'SELECT DISTINCT e.name, ef.norm_value, ef.critical_deviation, ef.norm_deviation, ef.value, f.name as feature_name , fv.variable ' +
-        'FROM public.equipment AS e ' +
-        'JOIN public.equipmentfeature AS ef ON e.id_equipment = ef.id_equipment ' +
-        'JOIN public.feature AS f ON ef.id_feature = f.id_feature ' +
-        'JOIN public.feature_var AS fv ON f.id_feature_var = fv.id_var ' +
-        'WHERE e.id_equipment = $1', [equipmentId], // Подставляем значение equipmentId в запрос
-        (err, result) => {
-            if (err) {
-                console.error('Ошибка выполнения запроса:', err);
-                res.status(500).json({ error: 'Ошибка сервера' });
-            } else {
-                res.status(200).json(result.rows);
-            }
-        }
-    );
-});
-
-app.get('/equipment/edit', (req, res) => {
-    const filePath = __dirname + '/public/equip_edit.html';
-    res.sendFile(filePath);
-});
-
-app.get('/equipment/delete', (req, res) => {
-    const filePath = __dirname + '/public/equip_del.html';
-    res.sendFile(filePath);
-});
-
-app.get('/equipment_show', (req, res) => {
-    pool.query('SELECT * FROM equipment', (err, result) => {
-        if (err) {
-            console.error('Ошибка выполнения запроса:', err);
-            res.status(500).send('Ошибка выполнения запроса');
-        } else {
-            res.status(200).json(result.rows);
-        }
-    });
-});
-
-app.get('/equipment/add', (req, res) => {
-    const filePath = __dirname + '/public/equipment_add.html';
-    res.sendFile(filePath);
-});
-
-app.get('/equipment/add_type', (req, res) => {
-    const filePath = __dirname + '/public/add_type_eq.html';
-    res.sendFile(filePath);
-});
-
-app.get('/projects', (req, res) => {
-    const filePath = __dirname + '/public/projects.html';
-    res.sendFile(filePath);
-});
-
-app.get('/projects/add_equipment', (req, res) => {
-    const filePath = __dirname + '/public/project_add_equip.html';
-    res.sendFile(filePath);
-});
-
-app.get('/project_show', (req, res) => {
-    pool.query('SELECT * FROM project', (err, result) => {
-        if (err) {
-            console.error('Ошибка выполнения запроса:', err);
-            res.status(500).send('Ошибка выполнения запроса');
-        } else {
-            res.status(200).json(result.rows);
-        }
-    });
-});
-
-app.get('/projects/:id_project', (req, res) => {
-    const projectId = req.params.id_project;
-    // Здесь можно выполнить запрос к базе данных для получения информации о конкретном оборудовании по его ID
-    // Затем отобразить соответствующую страницу с информацией о конкретном оборудовании
-});
-
-app.get('/projects/delete', (req, res) => {
-    const filePath = __dirname + '/public/project_del.html';
-    res.sendFile(filePath);
-});
-
-app.get('/projects/add', (req, res) => {
-    const filePath = __dirname + '/public/projects_add.html';
-    res.sendFile(filePath);
-});
-
-app.get('*', (req, res) => {
-    const filePath = __dirname + '/public/index.html';
-    res.sendFile(filePath);
-});
-
-const server = app.listen(3000, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-});
+});*/
